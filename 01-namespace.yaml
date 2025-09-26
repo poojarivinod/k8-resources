@@ -1,0 +1,5 @@
+# kubernetes --> kubernetes --> search as namespace --> click on Namespaces | Kubernetes -->scroll down and click on creating a new namespace
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: expense
