@@ -21,8 +21,10 @@ metadata:
   labels:
     purpose: "ebs-static-demo"
 spec:
+  # kubernetes --> search as nodeselector --> click on Assigning Pods to Nodes | Kubernetes --> nodeSelector --> click on Assign Pods to Nodes
+  # In terminal --> kubectl get nodes --show-labels --> topology.kubernetes.io/zone= is a key value
   nodeSelector:
-    topology.kubernetes.io/zone: us-east-1d
+    topology.kubernetes.io/zone: us-east-1d # it should be same availability as the volume
   containers:
   - name: nginx
     image: nginx
@@ -33,17 +35,17 @@ spec:
   - name: persistent-storage # volumeMounts name volumes name should be same
     persistentVolumeClaim:
       claimName: ebs-static
-# ---
-# kind: Service
-# apiVersion: v1
-# metadata:
-#   name: nginx-lb
-# spec:
-#   type: LoadBalancer
-#   selector: # labels are used as selectors
-#     purpose: "ebs-static-demo"
-#   ports:
-#   - protocol: TCP
-#     port: 80 # service port
-#     targetPort: 80
-#     nodePort: 30007
+---
+kind: Service
+apiVersion: v1
+metadata:
+  name: nginx-lb
+spec:
+  type: LoadBalancer
+  selector: # labels are used as selectors,it connects to that pod 
+    purpose: "ebs-static-demo"
+  ports:
+  - protocol: TCP
+    port: 80 # service port
+    targetPort: 80 # target container port
+    nodePort: 30007
