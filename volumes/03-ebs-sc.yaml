@@ -1,0 +1,10 @@
+#ebs csi driver install --> git hub --> examples/kubernetes --> dynamic-provisioning --> manifests --> storageclass.yaml
+apiVersion: storage.k8s.io/v1
+kind: StorageClass
+metadata:
+  name: ebs-sc
+provisioner: ebs.csi.aws.com
+# kubernates --> storage class 
+# Retain means if we delete the pod, data and volume won't be deleted  
+reclaimPolicy: Retain # default value is Delete(if we delete the pod , data and volume delete automatically)
+volumeBindingMode: WaitForFirstConsumer
