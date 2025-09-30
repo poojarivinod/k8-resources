@@ -1,3 +1,4 @@
+# ebs csi driver install --> git hub --> examples/kubernetes --> static-provisioning --> manifests --> pv.yaml
 apiVersion: v1
 kind: PersistentVolume
 metadata:
@@ -10,4 +11,4 @@ spec:
   csi:
     driver: ebs.csi.aws.com
     fsType: ext4
-    volumeHandle: vol-0d07e44d8e1a9eca9
+    volumeHandle: vol-099ce9fe56e4d3525
