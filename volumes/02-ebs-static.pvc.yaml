@@ -1,3 +1,4 @@
+#ebs csi driver install --> git hub --> examples/kubernetes --> static-provisioning --> manifests -->claim.yaml
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
@@ -10,38 +11,38 @@ spec:
     - ReadWriteOnce
   resources:
     requests:
-      storage: 20Gi
+      storage: 20Gi # we can ask max of 30GB, because our volume is max of 30gb
 ---
-apiVersion: v1
-kind: Pod
-metadata:
-  name: ebs-static
-  labels:
-    purpose: "ebs-static-demo"
-spec:
-  nodeSelector:
-    topology.kubernetes.io/zone: us-east-1a
-  containers:
-  - name: nginx
-    image: nginx
-    volumeMounts:
-    - name: persistent-storage
-      mountPath: /usr/share/nginx/html
-  volumes:
-  - name: persistent-storage
-    persistentVolumeClaim:
-      claimName: ebs-static
----
-kind: Service
-apiVersion: v1
-metadata:
-  name: nginx-lb
-spec:
-  type: LoadBalancer
-  selector: # labels are used as selectors
-    purpose: "ebs-static-demo"
-  ports:
-  - protocol: TCP
-    port: 80 # service port
-    targetPort: 80
-    nodePort: 30007
+# apiVersion: v1
+# kind: Pod
+# metadata:
+#   name: ebs-static
+#   labels:
+#     purpose: "ebs-static-demo"
+# spec:
+#   nodeSelector:
+#     topology.kubernetes.io/zone: us-east-1a
+#   containers:
+#   - name: nginx
+#     image: nginx
+#     volumeMounts:
+#     - name: persistent-storage
+#       mountPath: /usr/share/nginx/html
+#   volumes:
+#   - name: persistent-storage
+#     persistentVolumeClaim:
+#       claimName: ebs-static
+# ---
+# kind: Service
+# apiVersion: v1
+# metadata:
+#   name: nginx-lb
+# spec:
+#   type: LoadBalancer
+#   selector: # labels are used as selectors
+#     purpose: "ebs-static-demo"
+#   ports:
+#   - protocol: TCP
+#     port: 80 # service port
+#     targetPort: 80
+#     nodePort: 30007
