@@ -1,0 +1,49 @@
+#ebs csi driver install --> git hub --> examples/kubernetes --> dynamic-provisioning -->manifests--> claim.yaml
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: ebs-dynamic
+spec:
+  storageClassName: "ebs-sc" # Empty string must be explicitly set otherwise default StorageClass will be set
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 19Gi # we can ask max of 30GB, because our volume is max of 30gb
+---
+#ebs csi driver install --> git hub --> examples/kubernetes --> dynamic-provisioning --> manifests --> pod.yaml
+apiVersion: v1
+kind: Pod
+metadata:
+  name: ebs-dynamic
+  labels:
+    purpose: "ebs-dynamic-demo"
+spec:
+  # kubernetes --> search as nodeselector --> click on Assigning Pods to Nodes | Kubernetes --> nodeSelector --> click on Assign Pods to Nodes
+  # In terminal --> kubectl get nodes --show-labels --> topology.kubernetes.io/zone= is a key value
+  nodeSelector:
+    topology.kubernetes.io/zone: us-east-1d # it should be same availability as the volume
+  containers:
+  - name: nginx
+    image: nginx
+    volumeMounts:
+    - name: persistent-storage # name can be anything
+      mountPath: /usr/share/nginx/html # whatever directory we can place where data is stored # whatever we store in this directory--> it will store in the volume
+  volumes: # it request the pvc
+  - name: persistent-storage # volumeMounts name volumes name should be same
+    persistentVolumeClaim:
+      claimName: ebs-dynamic
+---
+kind: Service
+apiVersion: v1
+metadata:
+  name: nginx-lb
+spec:
+  type: LoadBalancer
+  selector: # labels are used as selectors,it connects to that pod 
+    purpose: "ebs-dynamic-demo"
+  ports:
+  - protocol: TCP
+    port: 80 # service port
+    targetPort: 80 # target container port
+    nodePort: 30007
