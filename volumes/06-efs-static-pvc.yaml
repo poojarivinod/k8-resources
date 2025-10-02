@@ -2,7 +2,7 @@
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
-  name: efs-claim
+  name: efs-static
 spec:
   accessModes:
     - ReadWriteOnce
@@ -20,6 +20,9 @@ metadata:
   labels:
     purpose: "efs-static-demo"
 spec:
+  # we are not using the nodeselector, because we are using networking in EFS
+  # nodeSelector:
+  #   topology.kubernetes.io/zone: us-east-1d
   containers:
   - name: nginx
     image: nginx
