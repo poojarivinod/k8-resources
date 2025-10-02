@@ -1,0 +1,12 @@
+# search in google as kubernetes --> kubernetes --> search as storage class --> AWS EFS
+kind: StorageClass
+apiVersion: storage.k8s.io/v1
+metadata:
+  name: efs-expense
+provisioner: efs.csi.aws.com
+parameters:
+  provisioningMode: efs-ap
+  fileSystemId: fs-0202408794c5777d0 # Elastic File System in AWS
+  directoryPerms: "700"
+  # search in google as kubernetes --> kubernetes --> search as storage class --> AWS EFS--> click on AWS_EFS_CSI_Driver Dynamic Provisioning(which is below the AWS EFS) --> copy the basePath
+  basePath: "/expense"

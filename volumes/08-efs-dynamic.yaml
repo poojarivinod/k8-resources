@@ -1,24 +1,22 @@
-#efs csi driver install--> github --> examples --> Static Provisioning --> specs --> claim.yaml
+# copy from the 06-efs-static-pvc.yaml and do some changes
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
-  name: efs-static
+  name: efs-dynamic
 spec:
   accessModes:
     - ReadWriteOnce
-  storageClassName: "" # we are using the efs-static, not dynamic
-  volumeName: "efs-static"
+  storageClassName: "efs-expense" 
   resources:
     requests:
-      storage: 5Gi #This is dummy
+      storage: 5Gi # This is dummy
 ---
-# copy from the 02-ebs-static-pvc.yaml and do some changes
 apiVersion: v1
 kind: Pod
 metadata:
-  name: efs-static
+  name: efs-dynamic
   labels:
-    purpose: "efs-static-demo"
+    purpose: "efs-dynamic-demo"
 spec:
   # we are not using the nodeselector, because we are using networking in EFS
   # nodeSelector:
@@ -32,7 +30,7 @@ spec:
   volumes: # it request the pvc
   - name: persistent-storage # volumeMounts name volumes name should be same
     persistentVolumeClaim:
-      claimName: efs-static
+      claimName: efs-dynamic
 ---
 kind: Service
 apiVersion: v1
@@ -41,7 +39,7 @@ metadata:
 spec:
   type: LoadBalancer
   selector: # labels are used as selectors,it connects to that pod 
-    purpose: "efs-static-demo"
+    purpose: "efs-dynamic-demo"
   ports:
   - protocol: TCP
     port: 80 # service port
