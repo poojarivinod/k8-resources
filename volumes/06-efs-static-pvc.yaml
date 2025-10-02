@@ -1,0 +1,46 @@
+#efs csi driver install--> github --> examples --> Static Provisioning --> specs --> claim.yaml
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: efs-claim
+spec:
+  accessModes:
+    - ReadWriteOnce
+  storageClassName: "" # we are using the efs-static, not dynamic
+  volumeName: "efs-static"
+  resources:
+    requests:
+      storage: 5Gi
+---
+# copy from the 02-ebs-static-pvc.yaml and do some changes
+apiVersion: v1
+kind: Pod
+metadata:
+  name: efs-static
+  labels:
+    purpose: "efs-static-demo"
+spec:
+  containers:
+  - name: nginx
+    image: nginx
+    volumeMounts:
+    - name: persistent-storage # name can be anything
+      mountPath: /usr/share/nginx/html # whatever directory we can place where data is stored # whatever we store in this directory--> it will store in the volume
+  volumes: # it request the pvc
+  - name: persistent-storage # volumeMounts name volumes name should be same
+    persistentVolumeClaim:
+      claimName: efs-static
+---
+kind: Service
+apiVersion: v1
+metadata:
+  name: nginx-lb
+spec:
+  type: LoadBalancer
+  selector: # labels are used as selectors,it connects to that pod 
+    purpose: "efs-static-demo"
+  ports:
+  - protocol: TCP
+    port: 80 # service port
+    targetPort: 80 # target container port
+    nodePort: 30007
