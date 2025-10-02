@@ -1,4 +1,4 @@
-#aws efs driver --> github --> examples --> Static Provisioning --> specs --> pv.yaml
+# efs csi driver install--> github --> examples --> Static Provisioning --> specs --> pv.yaml
 apiVersion: v1
 kind: PersistentVolume
 metadata:
@@ -9,7 +9,7 @@ spec:
   volumeMode: Filesystem
   accessModes:
     - ReadWriteOnce
-  storageClassName: "" # it we are using the efs-static, not dynamic
+  storageClassName: "" # we are using the efs-static, not dynamic
   persistentVolumeReclaimPolicy: Retain
   csi:
     driver: efs.csi.aws.com

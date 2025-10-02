@@ -1,0 +1,13 @@
+#efs csi driver install--> github --> examples --> Static Provisioning --> specs --> claim.yaml
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: efs-claim
+spec:
+  accessModes:
+    - ReadWriteOnce
+  storageClassName: "" # we are using the efs-static, not dynamic
+  volumeName: "efs-static"
+  resources:
+    requests:
+      storage: 5Gi
