@@ -1,0 +1,16 @@
+#aws efs driver --> github --> examples --> Static Provisioning --> specs --> pv.yaml
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: efs-static
+spec:
+  capacity:
+    storage: 5Gi # 5gb is dummy, it is flexible according to our requirement.
+  volumeMode: Filesystem
+  accessModes:
+    - ReadWriteOnce
+  storageClassName: "" # it we are using the efs-static, not dynamic
+  persistentVolumeReclaimPolicy: Retain
+  csi:
+    driver: efs.csi.aws.com
+    volumeHandle: fs-0f269716e6b4d55dd # File system ID (Elastic File System)
