@@ -2,8 +2,9 @@
 kind: StorageClass
 apiVersion: storage.k8s.io/v1
 metadata:
-  name: efs-expense
+  name: efs-expense #each project will have its own file system
 provisioner: efs.csi.aws.com
+reclaimPolicy: Retain # default value is Delete(if we delete the pod , data and volume delete automatically)
 parameters:
   provisioningMode: efs-ap
   fileSystemId: fs-0202408794c5777d0 # Elastic File System in AWS
