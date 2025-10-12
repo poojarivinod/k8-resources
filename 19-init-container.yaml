@@ -13,4 +13,4 @@ spec:
   - name: init-myservice
     image: busybox:1.28
     #command: ['sh', '-c', "until nslookup google.com; do echo waiting for myservice; sleep 10; done"]
-    command: ['sh', '-c', "until nslookup google.com; do echo waiting for myservice; sleep 10; done"]
+    command: ['sh', '-c', "until nslookup googlefadas.com; do echo waiting for myservice; sleep 10; done"]
