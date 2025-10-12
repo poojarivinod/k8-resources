@@ -1,0 +1,15 @@
+# kubernetes --> kubernetes --> search as pod
+apiVersion: v1
+kind: Pod
+metadata:
+  name: service-account-demo # nginx is name of the pod
+  namespace: expense # expense is name of the namespace
+spec:
+  # one pod can contain multiple containers
+  serviceAccount: expense-mysql-secret
+  initContainers:
+  - name: awscli
+    image: amazon/aws-cli #login to dockerhub --> explore --> search as amazon/aws-cli
+  containers:
+  - name: nginx # name of the container
+    image: nginx # name of the image
