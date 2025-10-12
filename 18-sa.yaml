@@ -11,7 +11,7 @@ spec:
   # Using awscli we are going to fetch the secrets from aws secret manager and store in the .env file in /secret folder
   - name: awscli  # To interact with aws we need awscli
     image: amazon/aws-cli #login to dockerhub --> explore --> search as amazon/aws-cli
-    command: [ 'sh', '-c', " aws secretsmanager get-secret-value --secret-id expense/mysql/creds --query SecretString --output text /secret/.env" ] # search as aws secret get value --> Amazon Aws Documentation and copy and paste in terminal to get extra text(--query SecretString --output text)
+    command: ['sh', '-c', "aws secretsmanager get-secret-value --secret-id expense/mysql/creds --query SecretString --output text > /secret/.env"] # search as aws secret get value --> Amazon Aws Documentation and copy and paste in terminal to get extra text(--query SecretString --output text)
     volumeMounts: #seach as kubernetes-->search as emptyDir--> ctrl F emptyDir
     - mountPath: /secret #it mount the /secret folder to secret-volume
       name: secret-volume
