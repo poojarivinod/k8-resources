@@ -12,15 +12,15 @@ spec:
   - name: awscli  # To interact with aws we need awscli
     image: amazon/aws-cli #login to dockerhub --> explore --> search as amazon/aws-cli
     command: [ 'sh', '-c', " aws secretsmanager get-secret-value --secret-id expense/mysql/creds --query SecretString --output text /secret/.env" ] # search as aws secret get value --> Amazon Aws Documentation and copy and paste in terminal to get extra text(--query SecretString --output text)
-  volumeMounts: #seach as kubernetes-->search as emptyDir--> ctrl F emptyDir
-  - mountPath: /secret #it mount the /secret folder to secret-volume
-    name: secret-volume
+    volumeMounts: #seach as kubernetes-->search as emptyDir--> ctrl F emptyDir
+    - mountPath: /secret #it mount the /secret folder to secret-volume
+      name: secret-volume
   containers:
   - name: nginx # name of the container
     image: nginx # name of the image
-  volumeMounts: #seach as kubernetes-->search as emptyDir--> ctrl F emptyDir
-  - mountPath: /secret #main container will access the /secret folder from secret-volume
-    name: secret-volume
+    volumeMounts: #seach as kubernetes-->search as emptyDir--> ctrl F emptyDir
+    - mountPath: /secret #main container will access the /secret folder from secret-volume
+      name: secret-volume
   volumes: #seach as kubernetes-->search as emptyDir--> ctrl F emptyDir
   - name: secret-volume
     emptyDir: {}
